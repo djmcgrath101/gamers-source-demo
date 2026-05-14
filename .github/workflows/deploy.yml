@@ -1,0 +1,79 @@
+name: Deploy Web App
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  NODE_VERSION: '22.12.x'
+  PNPM_VERSION: '10.33.0'
+  NX_PROJECT: gamers-source
+  AZURE_WEBAPP_PACKAGE_PATH: dist/apps/gamers-source
+  AZURE_STARTUP_MANIFEST: |
+    {
+      "type": "module",
+      "main": "server/server.mjs",
+      "engines": {
+        "node": "^20.19.0 || ^22.12.0 || ^24.0.0"
+      },
+      "scripts": {
+        "start": "node server/server.mjs"
+      },
+      "dependencies": {
+        "@angular/common": "21.2.9",
+        "@angular/core": "21.2.9",
+        "@angular/platform-browser": "21.2.9",
+        "@angular/router": "21.2.9",
+        "@angular/service-worker": "21.2.9",
+        "@angular/ssr": "~21.2.9",
+        "@nx/angular": "21.6.4",
+        "express": "^4.21.2"
+      }
+    }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
+
+      - name: Install PNPM
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
+
+      - name: Restore PNPM cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.local/share/pnpm/store/v10
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build app
+        run: pnpm exec nx run ${{ env.NX_PROJECT }}:build:production
+
+      - name: Add Azure startup manifest
+        run: printf '%s\n' "$AZURE_STARTUP_MANIFEST" > "$AZURE_WEBAPP_PACKAGE_PATH/package.json"
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
