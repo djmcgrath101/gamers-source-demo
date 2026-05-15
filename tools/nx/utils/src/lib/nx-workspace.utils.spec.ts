@@ -78,14 +78,14 @@ describe('nx-workspace.utils', () => {
       } satisfies PackageJson);
 
       const result = getWorkspaceScope(tree);
-      expect(result).toBe('cybertec');
+      expect(result).toBe('gamers-source');
     });
 
     it('returns default scope when name is missing', () => {
       (readJson as Mock).mockReturnValue({} as PackageJson);
 
       const result = getWorkspaceScope(tree);
-      expect(result).toBe('cybertec');
+      expect(result).toBe('gamers-source');
     });
 
     it('returns default scope for malformed scoped name', () => {
@@ -94,7 +94,7 @@ describe('nx-workspace.utils', () => {
       } satisfies PackageJson);
 
       const result = getWorkspaceScope(tree);
-      expect(result).toBe('cybertec');
+      expect(result).toBe('gamers-source');
     });
 
     it('returns scope despite overly long scoped name', () => {

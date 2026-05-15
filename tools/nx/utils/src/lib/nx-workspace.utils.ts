@@ -21,7 +21,7 @@ export function getWorkspaceScope(tree: Tree): string {
   const parts = name?.split('/');
 
   if (!name || !parts || parts.length < 2) {
-    return 'cybertec';
+    return 'gamers-source';
   }
 
   return parts[0].substring(1);
