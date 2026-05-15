@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "DefaultProjectGenerator",
+  "title": "Set Nx Default Project",
+  "description": "Set the defaultProject field in nx.json.",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Project name to set as the default project in nx.json.",
+      "x-priority": "important"
+    },
+    "skipFormat": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not format files with prettier.",
+      "x-priority": "internal"
+    }
+  },
+  "required": ["project"],
+  "additionalProperties": false
+}

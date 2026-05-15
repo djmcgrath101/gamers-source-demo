@@ -1,5 +1,10 @@
 {
   "generators": {
+    "default-project": {
+      "factory": "./src/lib/generators/default-project/generator",
+      "schema": "./src/lib/generators/default-project/schema.json",
+      "description": "Set the defaultProject field in nx.json"
+    },
     "nx-plugin": {
       "factory": "./src/lib/generators/plugin/generator",
       "schema": "./src/lib/generators/plugin/schema.json",
