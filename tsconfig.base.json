@@ -14,8 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "paths": {
-      "@gamers-source/shared-ui": ["./libs/shared/ui/src/index.ts"],
       "@gamers-source/nx-plugin": ["./tools/nx/plugin/src/index.ts"],
+      "@gamers-source/nx-utils": ["./tools/nx/utils/src/index.ts"],
+      "@gamers-source/shared-ui": ["./libs/shared/ui/src/index.ts"],
       "@gamers-source/ts-plugin": ["./tools/ts/plugin/src/index.ts"]
     }
   },
