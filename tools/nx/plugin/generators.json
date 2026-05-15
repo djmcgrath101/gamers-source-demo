@@ -5,6 +5,11 @@
       "schema": "./src/lib/generators/default-project/schema.json",
       "description": "Set the defaultProject field in nx.json"
     },
+    "nx-gen": {
+      "factory": "./src/lib/generators/generator/generator",
+      "schema": "./src/lib/generators/generator/schema.json",
+      "description": "Nx generator generator"
+    },
     "nx-plugin": {
       "factory": "./src/lib/generators/plugin/generator",
       "schema": "./src/lib/generators/plugin/schema.json",

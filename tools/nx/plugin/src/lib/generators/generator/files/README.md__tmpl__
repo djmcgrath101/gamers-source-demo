@@ -1,0 +1,19 @@
+# `<%= generatorName %>` Generator
+
+Briefly describe what this generator does.
+
+## Usage
+
+```bash
+pnpm nx g <plugin-name>:<%= generatorName %> [options]
+```
+
+## Options
+
+- List supported options and defaults.
+
+## Examples
+
+```bash
+pnpm nx g <plugin-name>:<%= generatorName %>
+```

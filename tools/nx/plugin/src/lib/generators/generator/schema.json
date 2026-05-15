@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "NxGeneratorGenerator",
+  "title": "Create a Generator for an Nx Plugin",
+  "description": "Create a Generator for an Nx Plugin.",
+  "type": "object",
+  "examples": [
+    {
+      "description": "Generate a generator named 'foo' in the 'myplugin' project. It results in the generator `foo` at `tools/myplugin/src/lib/generators/foo/generator.ts`",
+      "command": "nx g nx-gen foo --project=myplugin"
+    },
+    {
+      "description": "Generate a generator named 'bar' in the 'myplugin' project, placing the files in a custom directory 'custom-dir'. It results in the generator `bar` being named 'bar' in the generators collection file, but placed in the `tools/myplugin/src/lib/custom-dir/generator.ts` file.",
+      "command": "nx g nx-gen bar --project=myplugin --directory=custom-dir"
+    }
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The generator name to export in the plugin generators collection.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project in which to place the generator.  Project must be of type `plugin`."
+    },
+    "directory": {
+      "type": "string",
+      "description": "A directory relative to the plugin's `src/lib/generators` directory in which to create the generator files.  Defaults to the generator name."
+    },
+    "description": {
+      "type": "string",
+      "description": "Generator description.",
+      "x-priority": "important"
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "enum": ["jest", "vitest", "none"],
+      "description": "Test runner to use for unit tests.",
+      "default": "jest"
+    },
+    "skipLintChecks": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not add an eslint configuration for plugin json files."
+    },
+    "minimal": {
+      "type": "boolean",
+      "description": "Generate a generator with a minimal setup. No README.md generated.",
+      "default": false
+    },
+    "skipFormat": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not format files with prettier.",
+      "x-priority": "internal"
+    }
+  },
+  "required": ["name", "project"],
+  "additionalProperties": false
+}
