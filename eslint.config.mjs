@@ -1,4 +1,13 @@
+import ngrx from '@ngrx/eslint-plugin/v9';
 import nx from '@nx/eslint-plugin';
+
+const ngrxSignalsConfigs = ngrx.configs.signals ?? [];
+const ngrxSignalsPlugins = ngrxSignalsConfigs
+  .filter(config => config.plugins)
+  .reduce((plugins, config) => ({ ...plugins, ...config.plugins }), {});
+const ngrxSignalsRules = ngrxSignalsConfigs
+  .filter(config => config.rules)
+  .reduce((rules, config) => ({ ...rules, ...config.rules }), {});
 
 export default [
   ...nx.configs['flat/base'],
@@ -39,6 +48,13 @@ export default [
           ],
         },
       ],
+    },
+  },
+  {
+    files: ['**/*.ts'],
+    plugins: ngrxSignalsPlugins,
+    rules: {
+      ...ngrxSignalsRules,
     },
   },
   {
