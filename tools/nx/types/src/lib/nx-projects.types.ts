@@ -39,7 +39,7 @@ export interface NxProjectOptions<
 /**
  * Union of all valid Nx project scopes.
  */
-export type NxProjectScope = 'shared' | 'tools';
+export type NxProjectScope = 'backend' | 'frontend' | 'shared' | 'tools';
 
 /**
  * Union of all valid Nx project types.
