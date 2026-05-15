@@ -1,5 +1,14 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "cli": {
+    "packageManager": "pnpm"
+  },
+  "workspaceLayout": {
+    "libsDir": "libs",
+    "appsDir": "apps"
+  },
+  "defaultBase": "main",
+  "defaultProject": "gamers-source",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
@@ -14,7 +23,6 @@
     ],
     "sharedGlobals": []
   },
-  "defaultProject": "gamers-source",
   "targetDefaults": {
     "@angular/build:application": {
       "cache": true,
