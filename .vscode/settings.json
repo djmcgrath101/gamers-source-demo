@@ -43,7 +43,8 @@
     "**/tsconfig.*": true,
     "**/generators.json": true,
     "nx.json": true,
-    "**/ngsw-config.json": true
+    "**/ngsw-config.json": true,
+    "**/.vscode": true
   },
   "vitest.workspaceConfig": "vitest.workspace.ts"
 }
