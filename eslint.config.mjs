@@ -91,6 +91,30 @@ export default [
             }
           ]
         }
+      ],
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'lodash',
+              message:
+                'Import from lodash-es instead so bundle builds can tree-shake lodash utilities.'
+            },
+            {
+              name: 'zod',
+              message:
+                'Import schema builders from zod/mini and core errors/types from zod/v4/core to keep browser bundles small.'
+            }
+          ],
+          patterns: [
+            {
+              group: ['lodash/*'],
+              message:
+                'Import from lodash-es instead so bundle builds can tree-shake lodash utilities.'
+            }
+          ]
+        }
       ]
     }
   },
