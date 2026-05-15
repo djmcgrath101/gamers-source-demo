@@ -3,15 +3,16 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "affected:format": "npx nx format:write --affected",
-    "affected:lint": "npx nx affected:lint",
-    "affected:test": "npx nx affected:test",
-    "clean": "npx rimraf .cache data deploy dist coverage temp tmp logs static .angular",
-    "clean:modules": "npx rimraf node_modules",
-    "format": "npx nx format:write --all",
-    "lint": "npx nx run-many -t lint",
+    "affected:format": "pnpm exec nx format:write --affected",
+    "affected:lint": "pnpm exec nx affected:lint",
+    "affected:test": "pnpm exec nx affected:test",
+    "clean": "pnpm exec rimraf .cache data deploy dist coverage temp tmp logs static .angular",
+    "clean:modules": "pnpm exec rimraf node_modules",
+    "e2e": "pnpm exec nx run-many -t e2e",
+    "format": "pnpm exec nx format:write --all",
+    "lint": "pnpm exec nx run-many -t lint",
     "prepare": "husky",
-    "test": "npx nx run-many -t test"
+    "test": "pnpm exec nx run-many -t test"
   },
   "private": true,
   "dependencies": {

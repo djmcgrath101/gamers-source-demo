@@ -46,7 +46,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright
-        run: pnpm exec playwright install --with-deps --only-shell
+        run: pnpm exec playwright install --with-deps
 
       # Use Nx Agents for lint and unit tests, then run e2e on the main job.
       - name: Enable Nx Cloud CI

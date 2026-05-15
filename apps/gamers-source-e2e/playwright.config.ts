@@ -27,12 +27,22 @@ export default defineConfig({
     command: 'pnpm exec nx run gamers-source:serve',
     url: 'http://localhost:4200',
     reuseExistingServer: true,
+    timeout: 120_000,
     cwd: workspaceRoot
   },
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] }
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] }
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] }
     }
 
     // Uncomment for mobile browsers support
