@@ -9,7 +9,7 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/vitest.config.[mt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": []
@@ -93,17 +93,50 @@
   ],
   "generators": {
     "@nx/angular:application": {
+      "addTailwind": true,
       "e2eTestRunner": "playwright",
       "linter": "eslint",
-      "style": "css",
-      "unitTestRunner": "vitest-analog"
-    },
-    "@nx/angular:library": {
-      "linter": "eslint",
+      "style": "scss",
       "unitTestRunner": "vitest-analog"
     },
     "@nx/angular:component": {
-      "style": "css"
+      "style": "scss",
+      "changeDetection": "OnPush",
+      "export": true,
+      "prefix": "gs",
+      "standalone": true,
+      "type": "component"
+    },
+    "@nx/angular:directive": {
+      "prefix": "gs",
+      "type": "directive"
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "vitest-analog",
+      "addTailwind": false,
+      "changeDetection": "OnPush",
+      "prefix": "gs",
+      "style": "scss"
+    },
+    "@nx/angular:service": {
+      "type": "service"
+    },
+    "@nx/angular:pipe": {
+      "prefix": "gs",
+      "type": "pipe"
+    },
+    "@nx/js:library": {
+      "linter": "eslint",
+      "unitTestRunner": "vitest-analog"
+    },
+    "@nx/plugin:plugin": {
+      "bundler": "tsc",
+      "linter": "eslint",
+      "unitTestRunner": "vitest-analog"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
     }
   },
   "analytics": true,
