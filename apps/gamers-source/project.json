@@ -4,13 +4,11 @@
   "projectType": "application",
   "prefix": "gs",
   "sourceRoot": "apps/gamers-source/src",
-  "tags": [],
+  "tags": ["scope:frontend", "type:app"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/gamers-source",
         "browser": "apps/gamers-source/src/main.ts",
@@ -22,9 +20,7 @@
             "input": "apps/gamers-source/public"
           }
         ],
-        "styles": [
-          "apps/gamers-source/src/styles.scss"
-        ],
+        "styles": ["apps/gamers-source/src/styles.scss"],
         "server": "apps/gamers-source/src/main.server.ts",
         "ssr": {
           "entry": "apps/gamers-source/src/server.ts"
