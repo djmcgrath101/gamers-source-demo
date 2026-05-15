@@ -1,6 +1,5 @@
 import ngrx from '@ngrx/eslint-plugin/v9';
 import nx from '@nx/eslint-plugin';
-
 const ngrxSignalsConfigs = ngrx.configs.signals ?? [];
 const ngrxSignalsPlugins = ngrxSignalsConfigs
   .filter(config => config.plugins)
@@ -115,5 +114,13 @@ export default [
     ],
     // Override or add rules here
     rules: {}
+  },
+  {
+    files: ['**/*.json'],
+    // Override or add rules here
+    rules: {},
+    languageOptions: {
+      parser: await import('jsonc-eslint-parser')
+    }
   }
 ];

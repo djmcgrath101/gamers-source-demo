@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@gamers-source/shared-ui": ["./libs/shared/ui/src/index.ts"]
+      "@gamers-source/shared-ui": ["./libs/shared/ui/src/index.ts"],
+      "@gamers-source/nx-plugin": ["./tools/nx/plugin/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
