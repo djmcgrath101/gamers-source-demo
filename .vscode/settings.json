@@ -5,17 +5,13 @@
     "source.organizeImports": "always"
   },
   "tailwindCSS.lint.invalidConfigPath": "ignore",
-  "eslint.validate": [
-    "json",
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.validate": ["json", "javascript", "javascriptreact", "typescript", "typescriptreact"],
   "eslint.useFlatConfig": true,
   "eslint.workingDirectories": [
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "scss.lint.unknownAtRules": "ignore",
+  "css.lint.unknownAtRules": "ignore"
 }
