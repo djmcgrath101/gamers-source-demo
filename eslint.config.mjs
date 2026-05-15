@@ -145,8 +145,9 @@ export default [
   },
   {
     files: ['**/*.json'],
-    // Override or add rules here
-    rules: {},
+    rules: {
+      '@nx/dependency-checks': 'off'
+    },
     languageOptions: {
       parser: await import('jsonc-eslint-parser')
     }

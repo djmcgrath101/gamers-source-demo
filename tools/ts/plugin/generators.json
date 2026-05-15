@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "ts-file": {
+      "factory": "./src/lib/generators/file/generator",
+      "schema": "./src/lib/generators/file/schema.json",
+      "description": "ts-file generator"
+    }
+  }
+}

@@ -1,0 +1,3 @@
+describe('<%= fileName %>.<%= type %>', () => {
+  // Write tests
+});
