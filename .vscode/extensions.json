@@ -17,6 +17,7 @@
     "github.vscode-github-actions",
     "rangav.vscode-thunder-client",
     "pkief.material-icon-theme",
-    "orta.vscode-jest"
+    "orta.vscode-jest",
+    "vitest.explorer"
   ]
 }
