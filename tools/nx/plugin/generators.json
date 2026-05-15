@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "nx-plugin": {
+      "factory": "./src/lib/generators/plugin/generator",
+      "schema": "./src/lib/generators/plugin/schema.json",
+      "description": "nx-plugin generator"
+    }
+  }
+}
