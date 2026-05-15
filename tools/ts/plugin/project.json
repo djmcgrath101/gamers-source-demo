@@ -1,0 +1,41 @@
+{
+  "name": "ts-plugin",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/ts/plugin/src",
+  "projectType": "library",
+  "tags": ["scope:tools", "type:plugin"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/tools/ts/plugin",
+        "main": "tools/ts/plugin/src/index.ts",
+        "tsConfig": "tools/ts/plugin/tsconfig.lib.json",
+        "assets": [
+          "tools/ts/plugin/*.md",
+          {
+            "input": "./tools/ts/plugin/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./tools/ts/plugin/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./tools/ts/plugin",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./tools/ts/plugin",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    }
+  }
+}
