@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Review Uncommitted Changes'
+  short_description: 'Review local changes before commit'
+  default_prompt: 'Use $review-uncommitted-changes to review my uncommitted local changes.'
