@@ -14,14 +14,9 @@ module.exports = {
           '-moz-osx-font-smoothing': 'grayscale'
         },
         body: {
-          height: '100%'
-        },
-        a: {
-          cursor: 'pointer',
-          textDecoration: 'none'
-        },
-        'a:hover': {
-          textDecoration: 'underline'
+          margin: 0,
+          height: '100%',
+          textRendering: 'optimizeLegibility'
         },
         'button:focus': {
           outlineColor: 'transparent',
@@ -31,13 +26,17 @@ module.exports = {
         },
         'input::-webkit-search-cancel-button': {
           display: 'none'
+        },
+        figure: {
+          margin: 0
         }
       });
       addComponents({
-        'button-link': {
-          cursor: 'pointer'
-        },
-        '.button-link:hover': {
+        '.button-link': {
+          backgroundColor: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          fontWeight: '600',
           textDecoration: 'underline'
         }
       });

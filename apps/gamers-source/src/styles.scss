@@ -1,5 +1,61 @@
+@use '@angular/material' as mat;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* You can add global styles to this file, and also import other style files */
+html {
+  color-scheme: light dark;
+
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+      typography: Roboto,
+      density: 0
+    )
+  );
+
+  @include mat.system-classes();
+}
+
+body {
+  background: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
+  font: var(--mat-sys-body-medium);
+
+  ::selection {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+  }
+
+  .button-link {
+    color: var(--mat-sys-primary);
+  }
+
+  h1 {
+    font: var(--mat-sys-headline-large);
+  }
+
+  h2 {
+    font: var(--mat-sys-headline-medium);
+  }
+
+  h3 {
+    font: var(--mat-sys-headline-small);
+  }
+
+  h4 {
+    font: var(--mat-sys-title-large);
+  }
+
+  h5 {
+    font: var(--mat-sys-title-medium);
+  }
+
+  h6 {
+    font: var(--mat-sys-title-small);
+  }
+
+  p {
+    font: var(--mat-sys-body-medium);
+  }
+}
