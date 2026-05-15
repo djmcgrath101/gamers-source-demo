@@ -24,7 +24,73 @@ export default [
         {
           enforceBuildableLibDependency: true,
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
-          depConstraints: []
+          depConstraints: [
+            {
+              sourceTag: 'scope:tools',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:tools']
+            },
+            {
+              sourceTag: 'type:app',
+              onlyDependOnLibsWithTags: [
+                'type:core',
+                'type:data-access',
+                'type:feature',
+                'type:testing',
+                'type:types',
+                'type:ui',
+                'type:utils'
+              ]
+            },
+            {
+              sourceTag: 'type:core',
+              onlyDependOnLibsWithTags: [
+                'type:data-access',
+                'type:testing',
+                'type:types',
+                'type:ui',
+                'type:utils'
+              ]
+            },
+            {
+              sourceTag: 'type:data-access',
+              onlyDependOnLibsWithTags: [
+                'type:data-access',
+                'type:types',
+                'type:testing',
+                'type:utils'
+              ]
+            },
+            {
+              sourceTag: 'type:feature',
+              onlyDependOnLibsWithTags: [
+                'type:data-access',
+                'type:testing',
+                'type:types',
+                'type:ui',
+                'type:utils'
+              ]
+            },
+            {
+              sourceTag: 'type:plugin',
+              onlyDependOnLibsWithTags: ['type:plugin', 'type:types', 'type:utils']
+            },
+            {
+              sourceTag: 'type:testing',
+              onlyDependOnLibsWithTags: ['type:*', '!type:app']
+            },
+            {
+              sourceTag: 'type:types',
+              onlyDependOnLibsWithTags: ['type:types']
+            },
+            {
+              sourceTag: 'type:ui',
+              onlyDependOnLibsWithTags: ['type:testing', 'type:types', 'type:ui', 'type:utils']
+            },
+            {
+              sourceTag: 'type:utils',
+              onlyDependOnLibsWithTags: ['type:types', 'type:utils']
+            }
+          ]
         }
       ]
     }
