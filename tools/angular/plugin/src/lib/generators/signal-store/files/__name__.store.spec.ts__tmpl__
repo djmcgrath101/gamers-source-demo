@@ -1,0 +1,9 @@
+import { TestBed } from '@angular/core/testing';
+import { <%= className %>Store } from './<%= name %>.store';
+
+describe('<%= className %>Store', () => {
+  it('should be truthy', () => {
+    const store = TestBed.inject(<%= className %>Store);
+    expect(store).toBeTruthy();
+  });
+});

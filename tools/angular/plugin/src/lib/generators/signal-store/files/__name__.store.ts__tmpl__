@@ -1,0 +1,18 @@
+import { signalStore, withState } from '@ngrx/signals';
+import { eventGroup } from '@ngrx/signals/events';<% if (!skipLogger) { %>
+import { withLogger } from '@gamers-source/shared-ngrx-utils';<% } %>
+
+export interface <%= className %>State {}
+
+export const initial<%= className %>State: <%= className %>State = {};
+
+export const <%= propertyName %>Events = eventGroup({
+  source: '<%= titleName %>',
+  events: {}
+});
+
+export const <%= className %>Store = signalStore(<% if (providedInRoot) { %>
+  { providedIn: 'root' },<% } if (!skipLogger) { %>
+  withLogger('<%= className %>Store'),<% } %>
+  withState(initial<%= className %>State)
+);

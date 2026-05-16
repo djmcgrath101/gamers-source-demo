@@ -1,0 +1,12 @@
+import { TestBed } from '@angular/core/testing';
+import { signalStore } from '@ngrx/signals';
+import { with<%= className %> } from './<%= name %>.feature';
+
+const TestStore = signalStore({ providedIn: 'root' }, with<%= className %>());
+
+describe('with<%= className %>', () => {
+  it('should be truthy', () => {
+    const store = TestBed.inject(TestStore);
+    expect(store).toBeTruthy();
+  });
+});

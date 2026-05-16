@@ -14,6 +14,16 @@
       "factory": "./src/lib/generators/setup-tailwind/generator",
       "schema": "./src/lib/generators/setup-tailwind/schema.json",
       "description": "setup-tailwind generator"
+    },
+    "signal-store": {
+      "factory": "./src/lib/generators/signal-store/generator",
+      "schema": "./src/lib/generators/signal-store/schema.json",
+      "description": "signal-store generator"
+    },
+    "signal-store-feature": {
+      "factory": "./src/lib/generators/signal-store-feature/generator",
+      "schema": "./src/lib/generators/signal-store-feature/schema.json",
+      "description": "signal-store-feature generator"
     }
   }
 }

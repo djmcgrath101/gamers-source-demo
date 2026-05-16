@@ -1,0 +1,15 @@
+import { signalStoreFeature, withState } from '@ngrx/signals';
+
+export interface <%= className %>State {
+  // Add state
+}
+
+export const initial<%= className %>State: <%= className %>State = {
+  // Add initial state
+};
+
+export function with<%= className %> () {
+  return signalStoreFeature(
+    withState(initial<%= className %>State)
+  )
+}
