@@ -58,11 +58,68 @@ describe('ngLibGenerator', () => {
         name: 'orders-feature',
         routing: true,
         skipModule: true,
-        standalone: false
+        standalone: false,
+        unitTestRunner: 'vitest-analog'
       })
     );
     expect(readProjectConfiguration(tree, 'orders-feature').root).toBe('libs/orders/feature');
     expect(tree.read('libs/orders/feature/README.md', 'utf-8')).toBe('# orders-feature');
+  });
+
+  it('uses vitest-angular by default for buildable libraries', async () => {
+    await ngLibGenerator(tree, {
+      buildable: true,
+      name: 'orders',
+      type: 'core',
+      skipFormat: true
+    });
+
+    expect(libraryGenerator).toHaveBeenCalledWith(
+      tree,
+      expect.objectContaining({
+        buildable: true,
+        name: 'orders-core',
+        unitTestRunner: 'vitest-angular'
+      })
+    );
+  });
+
+  it('uses vitest-angular by default for publishable libraries', async () => {
+    await ngLibGenerator(tree, {
+      importPath: '@gamers-source/orders-core',
+      name: 'orders',
+      publishable: true,
+      type: 'core',
+      skipFormat: true
+    });
+
+    expect(libraryGenerator).toHaveBeenCalledWith(
+      tree,
+      expect.objectContaining({
+        name: 'orders-core',
+        publishable: true,
+        unitTestRunner: 'vitest-angular'
+      })
+    );
+  });
+
+  it('preserves an explicitly configured unit test runner', async () => {
+    await ngLibGenerator(tree, {
+      buildable: true,
+      name: 'orders',
+      type: 'core',
+      skipFormat: true,
+      unitTestRunner: 'jest'
+    });
+
+    expect(libraryGenerator).toHaveBeenCalledWith(
+      tree,
+      expect.objectContaining({
+        buildable: true,
+        name: 'orders-core',
+        unitTestRunner: 'jest'
+      })
+    );
   });
 
   it('configures generated Jest configs to transform lodash-es', async () => {

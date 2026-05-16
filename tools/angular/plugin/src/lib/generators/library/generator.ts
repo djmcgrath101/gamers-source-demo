@@ -1,6 +1,6 @@
 import { configureAngularJestTransformIgnorePatterns } from '@gamers-source/angular-tools-utils';
 import { normalizeProjectOptions } from '@gamers-source/nx-utils';
-import { libraryGenerator } from '@nx/angular/generators';
+import { libraryGenerator, UnitTestRunner } from '@nx/angular/generators';
 import {
   formatFiles,
   generateFiles,
@@ -50,9 +50,16 @@ export async function ngLibGenerator(tree: Tree, rawOptions: NgLibGeneratorOptio
 }
 
 function normalizeOptions(rawOptions: NgLibGeneratorOptions): NormalizedNgLibGeneratorOptions {
+  const unitTestRunner =
+    rawOptions.unitTestRunner ||
+    ((rawOptions.buildable || rawOptions.publishable
+      ? 'vitest-angular'
+      : 'vitest-analog') as UnitTestRunner);
+
   let options: NormalizedNgLibGeneratorOptions = {
     ...normalizeProjectOptions({ ...rawOptions, scope: 'frontend' }),
-    minimal: rawOptions.minimal ?? false
+    minimal: rawOptions.minimal ?? false,
+    unitTestRunner
   };
 
   if (options.type === 'core') {

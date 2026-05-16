@@ -40,7 +40,8 @@ Common Angular library options:
 - `--parent`: parent route configuration path for route registration
 - `--standalone`: use a standalone component entry point where the selected library type allows it
 - `--skipModule`: skip the default NgModule where the selected library type allows it
-- `--unitTestRunner`: unit test runner (`jest`, `vitest`, or `none`; default: `jest`)
+- `--unitTestRunner`: unit test runner (`vitest-angular`, `vitest-analog`, `jest`, or `none`;
+  defaults to `vitest-analog`, or `vitest-angular` for buildable and publishable libraries)
 - `--linter`: lint tool (`eslint` or `none`; default: `eslint`)
 - `--strict`: enable stricter type checking and build options (default: `true`)
 - `--style`: generated component style extension for standalone libraries (default: `scss`)
