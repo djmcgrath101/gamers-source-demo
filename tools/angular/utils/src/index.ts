@@ -1,1 +1,2 @@
-export * from './lib/angular-tools.utils';
+export * from './lib/ng-projects.utils';
+export * from './lib/ng-root-component.utils';
