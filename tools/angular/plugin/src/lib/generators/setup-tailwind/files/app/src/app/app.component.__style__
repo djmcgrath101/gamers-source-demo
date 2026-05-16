@@ -1,0 +1,7 @@
+:host {
+    @apply block fill-space;
+
+    main {
+      @apply fill-space;
+    }
+}

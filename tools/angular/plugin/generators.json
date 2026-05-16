@@ -1,9 +1,19 @@
 {
   "generators": {
+    "ng-lib": {
+      "factory": "./src/lib/generators/library/generator",
+      "schema": "./src/lib/generators/library/schema.json",
+      "description": "ng-lib generator"
+    },
     "ng-module": {
       "factory": "./src/lib/generators/module/generator",
       "schema": "./src/lib/generators/module/schema.json",
       "description": "ng-module generator"
+    },
+    "setup-tailwind": {
+      "factory": "./src/lib/generators/setup-tailwind/generator",
+      "schema": "./src/lib/generators/setup-tailwind/schema.json",
+      "description": "setup-tailwind generator"
     }
   }
 }
