@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "ng-module": {
+      "factory": "./src/lib/generators/module/generator",
+      "schema": "./src/lib/generators/module/schema.json",
+      "description": "ng-module generator"
+    }
+  }
+}

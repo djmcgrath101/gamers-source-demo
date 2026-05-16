@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "NgModuleGeneratorSchema",
+  "title": "Angular Module Options Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Creates a new, generic NgModule definition in the given project.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the NgModule.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the NgModule?",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "$default": {
+        "$source": "workingDirectory"
+      },
+      "description": "The path at which to create the NgModule, relative to the workspace root.",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "routing": {
+      "type": "boolean",
+      "description": "Create a routing module.",
+      "default": false,
+      "x-user-analytics": "ep.ng_routing"
+    },
+    "routingScope": {
+      "enum": ["Child", "Root"],
+      "type": "string",
+      "description": "The scope for the new routing module.",
+      "default": "Child"
+    },
+    "route": {
+      "type": "string",
+      "description": "The route path for a lazy-loaded module. When supplied, creates a component in the new module, and adds the route to that component in the `Routes` array declared in the module provided in the `--module` option."
+    },
+    "flat": {
+      "type": "boolean",
+      "description": "Create the new files at the top level of the current project root. ",
+      "default": false
+    },
+    "commonModule": {
+      "type": "boolean",
+      "description": "The new NgModule imports \"CommonModule\". ",
+      "default": true,
+      "visible": false
+    },
+    "module": {
+      "type": "string",
+      "description": "The declaring NgModule.",
+      "alias": "m"
+    },
+    "core": {
+      "description": "Flag to indicate that this module should not be allowed to be imported more than once",
+      "type": "boolean",
+      "default": false
+    },
+    "forRoot": {
+      "description": "Flag to indicate that the module will be configurable through a static forRoot method.",
+      "type": "boolean",
+      "default": false
+    },
+    "ui": {
+      "description": "Flag to indicate that library will contain declarations for UI dependencies.",
+      "type": "boolean",
+      "default": false
+    },
+    "skipFormat": {
+      "description": "Skip formatting files",
+      "type": "boolean",
+      "default": false
+    },
+    "skipSpec": {
+      "type": "boolean",
+      "description": "Skip creating a spec test file for the new module.",
+      "default": false
+    }
+  },
+  "required": ["name", "project"]
+}
