@@ -1,5 +1,10 @@
 {
   "generators": {
+    "node-lib": {
+      "factory": "./src/lib/generators/library/generator",
+      "schema": "./src/lib/generators/library/schema.json",
+      "description": "node-lib generator"
+    },
     "package-json": {
       "factory": "./src/lib/generators/package-json/generator",
       "schema": "./src/lib/generators/package-json/schema.json",
