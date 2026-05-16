@@ -1,6 +1,7 @@
 import { configureAngularJestTransformIgnorePatterns } from '@gamers-source/angular-tools-utils';
+import { NxProjectUnitTestRunner } from '@gamers-source/nx-types';
 import { normalizeProjectOptions } from '@gamers-source/nx-utils';
-import { addTestTypesToTsConfig, type TestTypesRunner } from '@gamers-source/ts-utils';
+import { addTestTypesToTsConfig, sortTsConfigBasePaths } from '@gamers-source/ts-utils';
 import { libraryGenerator, UnitTestRunner } from '@nx/angular/generators';
 import {
   formatFiles,
@@ -63,6 +64,8 @@ export async function ngLibGenerator(tree: Tree, rawOptions: NgLibGeneratorOptio
     tree.write(joinPathFragments(projectConfig.root, 'README.md'), `# ${options.name}`);
   }
 
+  sortTsConfigBasePaths(tree);
+
   if (!options.skipFormat) {
     await formatFiles(tree);
   }
@@ -71,11 +74,11 @@ export async function ngLibGenerator(tree: Tree, rawOptions: NgLibGeneratorOptio
 /**
  * Resolves the test runner ambient types needed by testing libraries.
  */
-function getTestTypesRunner(rawOptions: NgLibGeneratorOptions): TestTypesRunner {
+function getTestTypesRunner(rawOptions: NgLibGeneratorOptions): NxProjectUnitTestRunner {
   return (rawOptions.unitTestRunner ||
     (rawOptions.buildable || rawOptions.publishable
       ? 'vitest-angular'
-      : 'vitest-analog')) as TestTypesRunner;
+      : 'vitest-analog')) as NxProjectUnitTestRunner;
 }
 
 /**

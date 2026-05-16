@@ -1,6 +1,6 @@
-import { joinPathFragments, type ProjectConfiguration, type Tree } from '@nx/devkit';
-
-export type TestTypesRunner = 'jest' | 'vitest' | 'vitest-angular' | 'vitest-analog' | 'none';
+import { NxProjectUnitTestRunner } from '@gamers-source/nx-types';
+import { joinPathFragments, type ProjectConfiguration, type Tree, updateJson } from '@nx/devkit';
+import { TsConfigJson } from 'type-fest';
 
 /**
  * Adds the selected unit test runner's ambient types to a library tsconfig.
@@ -8,7 +8,7 @@ export type TestTypesRunner = 'jest' | 'vitest' | 'vitest-angular' | 'vitest-ana
 export function addTestTypesToTsConfig(
   tree: Tree,
   projectConfig: ProjectConfiguration,
-  testRunner: TestTypesRunner
+  testRunner: NxProjectUnitTestRunner
 ): void {
   if (testRunner === 'none') {
     return;
@@ -26,4 +26,29 @@ export function addTestTypesToTsConfig(
   );
 
   tree.write(tsConfigLibPath, JSON.stringify(tsConfigLib, null, 2));
+}
+
+/**
+ * Sorts the root TypeScript path aliases alphabetically while preserving their mapped values.
+ */
+export function sortTsConfigBasePaths(tree: Tree): void {
+  const TS_CONFIG_BASE_PATH = 'tsconfig.base.json';
+
+  if (!tree.exists(TS_CONFIG_BASE_PATH)) {
+    return;
+  }
+
+  updateJson<TsConfigJson>(tree, TS_CONFIG_BASE_PATH, tsConfig => {
+    const paths = tsConfig.compilerOptions?.paths;
+
+    if (!paths) {
+      return tsConfig;
+    }
+
+    tsConfig.compilerOptions!.paths = Object.fromEntries(
+      Object.entries(paths).sort(([leftAlias], [rightAlias]) => leftAlias.localeCompare(rightAlias))
+    );
+
+    return tsConfig;
+  });
 }

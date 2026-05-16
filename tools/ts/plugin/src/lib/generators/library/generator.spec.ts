@@ -54,6 +54,36 @@ describe('ts-lib generator', () => {
     expect(indexFile).toContain(`export * from './lib/date.utils';`);
   }, 10_000);
 
+  it('sorts tsconfig base paths after library generation', async () => {
+    tree.write(
+      'tsconfig.base.json',
+      JSON.stringify(
+        {
+          compilerOptions: {
+            paths: {
+              '@gamers-source/zeta': ['./libs/zeta/src/index.ts'],
+              '@gamers-source/alpha': ['./libs/alpha/src/index.ts']
+            }
+          }
+        },
+        null,
+        2
+      )
+    );
+
+    await tsLibraryGenerator(tree, {
+      name: 'date',
+      scope: 'shared',
+      type: 'utils',
+      skipFormat: true
+    });
+
+    const tsConfigBase = JSON.parse(tree.read('tsconfig.base.json', 'utf-8')!);
+    const aliases = Object.keys(tsConfigBase.compilerOptions.paths);
+
+    expect(aliases).toEqual([...aliases].sort((left, right) => left.localeCompare(right)));
+  }, 10_000);
+
   it('defaults types libraries to no spec generation and no test target', async () => {
     await tsLibraryGenerator(tree, {
       name: 'contracts',

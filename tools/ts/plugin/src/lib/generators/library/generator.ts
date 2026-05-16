@@ -3,7 +3,7 @@ import {
   isTestableProject,
   normalizeProjectOptions
 } from '@gamers-source/nx-utils';
-import { addTestTypesToTsConfig } from '@gamers-source/ts-utils';
+import { addTestTypesToTsConfig, sortTsConfigBasePaths } from '@gamers-source/ts-utils';
 import {
   formatFiles,
   generateFiles,
@@ -78,6 +78,8 @@ export async function tsLibraryGenerator(tree: Tree, rawOptions: TsLibraryGenera
     addSpec: isTestableProject(options.type),
     skipFormat: true
   });
+
+  sortTsConfigBasePaths(tree);
 
   if (!options.skipFormat) {
     await formatFiles(tree);

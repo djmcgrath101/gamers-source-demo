@@ -45,3 +45,13 @@ export type NxProjectScope = 'backend' | 'frontend' | 'shared' | 'tools';
  * Union of all valid Nx project types.
  */
 export type NxProjectType = 'app' | NxProjectLibType;
+
+/**
+ * Union of all valid Nx project unit test runners.
+ */
+export type NxProjectUnitTestRunner =
+  | 'jest'
+  | 'vitest'
+  | 'vitest-angular'
+  | 'vitest-analog'
+  | 'none';

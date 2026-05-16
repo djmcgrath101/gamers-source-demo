@@ -78,6 +78,36 @@ describe('ngLibGenerator', () => {
     expect(tree.read('libs/orders/feature/README.md', 'utf-8')).toBe('# orders-feature');
   });
 
+  it('sorts tsconfig base paths after library generation', async () => {
+    tree.write(
+      'tsconfig.base.json',
+      JSON.stringify(
+        {
+          compilerOptions: {
+            paths: {
+              '@gamers-source/zeta': ['./libs/zeta/src/index.ts'],
+              '@gamers-source/alpha': ['./libs/alpha/src/index.ts']
+            }
+          }
+        },
+        null,
+        2
+      )
+    );
+
+    await ngLibGenerator(tree, {
+      name: 'orders',
+      style: 'scss',
+      type: 'feature',
+      skipFormat: true
+    });
+
+    const tsConfigBase = JSON.parse(tree.read('tsconfig.base.json', 'utf-8')!);
+    const aliases = Object.keys(tsConfigBase.compilerOptions.paths);
+
+    expect(aliases).toEqual([...aliases].sort((left, right) => left.localeCompare(right)));
+  });
+
   it('uses vitest-angular by default for buildable libraries', async () => {
     await ngLibGenerator(tree, {
       buildable: true,
