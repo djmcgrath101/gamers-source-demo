@@ -1,1 +1,2 @@
-export * from './lib/shared-node.utils';
+export * from './lib/fs/file-archiver.util';
+export * from './lib/fs/fs-path.utils';
