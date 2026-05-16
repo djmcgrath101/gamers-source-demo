@@ -1,7 +1,7 @@
 {
-  "name": "shared-ui",
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/ui/src",
+  "name": "shared-material-ui",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/material/ui/src",
   "prefix": "gs",
   "projectType": "library",
   "tags": ["scope:frontend", "type:ui"],
