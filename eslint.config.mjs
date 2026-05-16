@@ -155,7 +155,8 @@ export default [
   {
     files: ['**/*.spec.ts', '**/*.{mock,mocks}.ts'],
     rules: {
-      '@nx/enforce-module-boundaries': 'off'
+      '@nx/enforce-module-boundaries': 'off',
+      '@typescript-eslint/no-empty-function': 'off'
     }
   }
 ];

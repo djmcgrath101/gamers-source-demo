@@ -15,6 +15,7 @@
     "paths": {
       "@gamers-source/angular-plugin": ["./tools/angular/plugin/src/index.ts"],
       "@gamers-source/angular-tools-utils": ["./tools/angular/utils/src/index.ts"],
+      "@gamers-source/node-plugin": ["./tools/node/plugin/src/index.ts"],
       "@gamers-source/nx-plugin": ["./tools/nx/plugin/src/index.ts"],
       "@gamers-source/nx-testing": ["./tools/nx/testing/src/index.ts"],
       "@gamers-source/nx-types": ["./tools/nx/types/src/index.ts"],

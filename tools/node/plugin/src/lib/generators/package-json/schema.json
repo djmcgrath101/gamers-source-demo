@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "PackageJson",
+  "title": "PackageJsonGenerator",
+  "description": "Generates a package.json in the specified directory.",
+  "type": "object",
+  "properties": {
+    "dependencies": {
+      "description": "Package names to copy from the root package.json dependencies or devDependencies.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "dir": {
+      "description": "The directory where the package.json will be created.",
+      "type": "string",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "alias": "d"
+    },
+    "main": {
+      "description": "The generated package entry point.",
+      "type": "string"
+    },
+    "name": {
+      "description": "The name of the package.  The npmScope will be automatically prepended.",
+      "type": "string",
+      "alias": "n"
+    },
+    "nodeEngine": {
+      "description": "The Node.js semver range to write to engines.node.",
+      "type": "string"
+    },
+    "overwrite": {
+      "description": "Replace package.json when it already exists.",
+      "type": "boolean",
+      "default": false
+    },
+    "vers": {
+      "description": "The semantic version of the package.  Defaults to '0.0.1'.",
+      "type": "string",
+      "pattern": "^(?:\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z-.]+)?(?:\\+[0-9A-Za-z-.]+)?)$"
+    },
+    "private": {
+      "description": "If true, the package will be marked as private.",
+      "type": "boolean",
+      "default": true
+    },
+    "skipFormat": {
+      "description": "Skip formatting files.",
+      "type": "boolean",
+      "default": false
+    },
+    "startScript": {
+      "description": "The npm start script command.",
+      "type": "string"
+    }
+  },
+  "required": ["dir", "name"]
+}

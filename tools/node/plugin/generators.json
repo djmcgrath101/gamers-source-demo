@@ -1,0 +1,14 @@
+{
+  "generators": {
+    "package-json": {
+      "factory": "./src/lib/generators/package-json/generator",
+      "schema": "./src/lib/generators/package-json/schema.json",
+      "description": "package-json generator"
+    },
+    "package-version": {
+      "factory": "./src/lib/generators/package-version/generator",
+      "schema": "./src/lib/generators/package-version/schema.json",
+      "description": "package-version generator"
+    }
+  }
+}

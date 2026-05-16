@@ -1,0 +1,15 @@
+{
+  "name": "<%= name %>",
+  "version": "<%= vers %>"<% if (private) { %>,
+  "private": true<% } %><% if (main) { %>,
+  "main": "<%= main %>"<% } %><% if (nodeEngine) { %>,
+  "engines": {
+    "node": "<%= nodeEngine %>"
+  }<% } %><% if (startScript) { %>,
+  "scripts": {
+    "start": "<%= startScript %>"
+  }<% } %><% if (dependencies) { %>,
+  "dependencies": {<% Object.entries(dependencies).forEach(([dependencyName, dependencyVersion], index, dependencyEntries) => { %>
+    "<%= dependencyName %>": "<%= dependencyVersion %>"<%= index < dependencyEntries.length - 1 ? ',' : '' %><% }); %>
+  }<% } %>
+}
