@@ -1,5 +1,10 @@
 {
   "generators": {
+    "ng-comp": {
+      "factory": "./src/lib/generators/component/generator",
+      "schema": "./src/lib/generators/component/schema.json",
+      "description": "ng-comp generator"
+    },
     "ng-lib": {
       "factory": "./src/lib/generators/library/generator",
       "schema": "./src/lib/generators/library/schema.json",
