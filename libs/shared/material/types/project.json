@@ -1,0 +1,19 @@
+{
+  "name": "shared-material-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/material/types/src",
+  "projectType": "library",
+  "tags": ["scope:frontend", "type:types"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/material/types",
+        "main": "libs/shared/material/types/src/index.ts",
+        "tsConfig": "libs/shared/material/types/tsconfig.lib.json",
+        "assets": ["libs/shared/material/types/*.md"]
+      }
+    }
+  }
+}
