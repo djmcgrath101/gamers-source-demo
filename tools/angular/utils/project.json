@@ -1,0 +1,19 @@
+{
+  "name": "angular-tools-utils",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/angular/utils/src",
+  "projectType": "library",
+  "tags": ["scope:tools", "type:utils"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/tools/angular/utils",
+        "main": "tools/angular/utils/src/index.ts",
+        "tsConfig": "tools/angular/utils/tsconfig.lib.json",
+        "assets": ["tools/angular/utils/*.md"]
+      }
+    }
+  }
+}
