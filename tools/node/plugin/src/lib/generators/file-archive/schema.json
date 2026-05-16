@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "FileArchiveGeneratorSchema",
+  "title": "File Archive Generator",
+  "description": "Generates an archive of all the files in a specified folder.",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "description": "Path to folder containing files to be archived (relative to the workspace root)",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What folder contains the files that need to be archived (relative to the workspace root)?"
+    },
+    "destination": {
+      "type": "string",
+      "description": "Path to folder where the archive file should be placed (relative to the workspace root). If not provided, defaults to the source folder.",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      }
+    },
+    "filename": {
+      "type": "string",
+      "description": "Name of the archive file.  Defaults to the source directory name if not provided"
+    },
+    "format": {
+      "type": "string",
+      "description": "The format of the archive, either zip or tar. Defaults to 'zip' if not provided.",
+      "enum": ["zip", "tar"],
+      "default": "zip"
+    },
+    "overwrite": {
+      "type": "boolean",
+      "description": "Whether to overwrite the archive file if it already exists. Defaults to false.",
+      "default": false
+    }
+  },
+  "required": ["source"]
+}

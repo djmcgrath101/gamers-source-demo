@@ -1,5 +1,10 @@
 {
   "generators": {
+    "file-archive": {
+      "factory": "./src/lib/generators/file-archive/generator",
+      "schema": "./src/lib/generators/file-archive/schema.json",
+      "description": "file-archive generator"
+    },
     "node-lib": {
       "factory": "./src/lib/generators/library/generator",
       "schema": "./src/lib/generators/library/schema.json",
