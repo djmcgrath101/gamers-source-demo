@@ -43,7 +43,7 @@
       "type": "string",
       "enum": ["none", "jest", "vitest"],
       "x-priority": "important",
-      "default": "jest"
+      "default": "vitest"
     },
     "tags": {
       "type": "string",
