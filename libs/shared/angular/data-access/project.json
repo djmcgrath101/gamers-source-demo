@@ -2,7 +2,7 @@
   "name": "shared-angular-data-access",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/angular/data-access/src",
-  "prefix": "cy",
+  "prefix": "gs",
   "projectType": "library",
   "tags": ["scope:frontend", "type:data-access"],
   "targets": {

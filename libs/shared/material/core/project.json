@@ -2,7 +2,7 @@
   "name": "shared-material-core",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/material/core/src",
-  "prefix": "cy",
+  "prefix": "gs",
   "projectType": "library",
   "tags": ["scope:frontend", "type:core"],
   "targets": {

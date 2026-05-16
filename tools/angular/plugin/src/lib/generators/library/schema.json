@@ -37,7 +37,7 @@
       "format": "html-selector",
       "description": "The prefix to apply to generated selectors.",
       "alias": "p",
-      "default": "cy"
+      "default": "gs"
     },
     "skipFormat": {
       "description": "Skip formatting files.",

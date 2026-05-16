@@ -2,7 +2,7 @@
   "name": "shared-angular-utils",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "/libs/shared/angular/utils/src",
-  "prefix": "cy",
+  "prefix": "gs",
   "projectType": "library",
   "tags": ["scope:frontend", "type:utils"],
   "targets": {
