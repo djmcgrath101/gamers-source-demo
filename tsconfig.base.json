@@ -23,6 +23,7 @@
       ],
       "@gamers-source/shared-angular-testing": ["./libs/shared/angular/testing/src/index.ts"],
       "@gamers-source/shared-angular-utils": ["./libs/shared/angular/utils/src/index.ts"],
+      "@gamers-source/shared-material-core": ["./libs/shared/material/core/src/index.ts"],
       "@gamers-source/shared-material-types": ["./libs/shared/material/types/src/index.ts"],
       "@gamers-source/shared-material-ui": ["./libs/shared/material/ui/src/index.ts"],
       "@gamers-source/shared-types": ["./libs/shared/types/src/index.ts"],
