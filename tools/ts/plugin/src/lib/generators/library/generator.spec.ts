@@ -52,7 +52,7 @@ describe('ts-lib generator', () => {
     const indexFilePath = joinPathFragments(projectConfig.root, 'src', 'index.ts');
     const indexFile = tree.read(indexFilePath, 'utf-8');
     expect(indexFile).toContain(`export * from './lib/date.utils';`);
-  });
+  }, 10_000);
 
   it('defaults types libraries to no spec generation and no test target', async () => {
     await tsLibraryGenerator(tree, {

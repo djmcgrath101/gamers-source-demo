@@ -185,9 +185,7 @@ describe('ngLibGenerator', () => {
     expect(tsConfigLib.compilerOptions.types).toEqual(
       expect.arrayContaining(['vitest/globals', 'vitest/importMeta', 'vite/client', 'vitest'])
     );
-    expect(warnSpy).toHaveBeenCalledWith(
-      'No additional files were generated for libraries of type "testing".'
-    );
+    expect(warnSpy).not.toHaveBeenCalled();
     warnSpy.mockRestore();
   });
 

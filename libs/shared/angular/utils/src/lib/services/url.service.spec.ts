@@ -1,16 +1,15 @@
 import { DOCUMENT } from '@angular/common';
+import { TestBed } from '@angular/core/testing';
 import { NavigationExtras, Router, UrlTree } from '@angular/router';
-import { SpectatorService, createServiceFactory } from '@ngneat/spectator/jest';
 import { UrlService } from './url.service';
 
 describe('UrlService', () => {
-  let spectator: SpectatorService<UrlService>;
   let documentMock: Pick<Document, 'location'>;
   let routerMock: Pick<Router, 'createUrlTree' | 'serializeUrl'>;
 
   const urlTree = {} as UrlTree;
 
-  const setup = (location?: Partial<Location>): void => {
+  const setup = (location?: Partial<Location>): UrlService => {
     documentMock = {
       location: {
         hostname: 'app.example.test',
@@ -24,48 +23,49 @@ describe('UrlService', () => {
       serializeUrl: vitest.fn(() => '/teams/alpha?debug=true')
     };
 
-    spectator = createService();
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        UrlService,
+        {
+          provide: DOCUMENT,
+          useValue: documentMock
+        },
+        {
+          provide: Router,
+          useValue: routerMock
+        }
+      ]
+    });
+
+    return TestBed.inject(UrlService);
   };
 
-  const createService = createServiceFactory({
-    service: UrlService,
-    providers: [
-      {
-        provide: DOCUMENT,
-        useFactory: () => documentMock
-      },
-      {
-        provide: Router,
-        useFactory: () => routerMock
-      }
-    ]
-  });
-
   it('creates service instance', () => {
-    setup();
+    const service = setup();
 
-    expect(spectator.service).toBeTruthy();
+    expect(service).toBeTruthy();
   });
 
   describe('buildUrl', () => {
     it('returns an absolute URL for a route string', () => {
-      setup();
+      const service = setup();
 
-      expect(spectator.service.buildUrl('/test/123')).toEqual(
+      expect(service.buildUrl('/test/123')).toEqual(
         new URL('https://app.example.test:4200/test/123')
       );
     });
 
     it('returns an absolute URL for a route string without a leading slash', () => {
-      setup();
+      const service = setup();
 
-      expect(spectator.service.buildUrl('test/123')).toEqual(
+      expect(service.buildUrl('test/123')).toEqual(
         new URL('https://app.example.test:4200/test/123')
       );
     });
 
     it('returns an absolute URL for router link params and navigation extras', () => {
-      setup();
+      const service = setup();
 
       const extras: NavigationExtras = {
         queryParams: {
@@ -73,7 +73,7 @@ describe('UrlService', () => {
         }
       };
 
-      expect(spectator.service.buildUrl(['teams', 'alpha'], extras)).toEqual(
+      expect(service.buildUrl(['teams', 'alpha'], extras)).toEqual(
         new URL('https://app.example.test:4200/teams/alpha?debug=true')
       );
       expect(routerMock.createUrlTree).toHaveBeenCalledWith(['teams', 'alpha'], extras);
@@ -81,51 +81,45 @@ describe('UrlService', () => {
     });
 
     it('omits the port segment when the current location has no port', () => {
-      setup({ port: '' });
+      const service = setup({ port: '' });
 
-      expect(spectator.service.buildUrl('/test/123')).toEqual(
-        new URL('https://app.example.test/test/123')
-      );
+      expect(service.buildUrl('/test/123')).toEqual(new URL('https://app.example.test/test/123'));
     });
   });
 
   describe('isFullUrl', () => {
     it('returns true when a string URL starts with the current origin', () => {
-      setup();
+      const service = setup();
 
       const testUrl = 'https://app.example.test:4200/test/123';
 
-      expect(spectator.service.isFullUrl(testUrl)).toBe(true);
+      expect(service.isFullUrl(testUrl)).toBe(true);
     });
 
     it('returns true when a URL object starts with the current origin', () => {
-      setup();
+      const service = setup();
 
-      expect(spectator.service.isFullUrl(new URL('https://app.example.test:4200/test/123'))).toBe(
-        true
-      );
+      expect(service.isFullUrl(new URL('https://app.example.test:4200/test/123'))).toBe(true);
     });
 
     it('returns false if the string URL is missing the current origin', () => {
-      setup();
+      const service = setup();
 
-      expect(spectator.service.isFullUrl('/test/123')).toBe(false);
+      expect(service.isFullUrl('/test/123')).toBe(false);
     });
 
     it('returns false if the URL object uses a different origin', () => {
-      setup();
+      const service = setup();
 
-      expect(spectator.service.isFullUrl(new URL('https://other.example.test:4200/test/123'))).toBe(
-        false
-      );
+      expect(service.isFullUrl(new URL('https://other.example.test:4200/test/123'))).toBe(false);
     });
 
     it('returns false if the string URL only starts with the current origin text', () => {
-      setup();
+      const service = setup();
 
       const testUrl = 'https://app.example.test:4200@other.example.test/test/123';
 
-      expect(spectator.service.isFullUrl(testUrl)).toBe(false);
+      expect(service.isFullUrl(testUrl)).toBe(false);
     });
   });
 });
