@@ -15,6 +15,7 @@
     "paths": {
       "@gamers-source/angular-plugin": ["./tools/angular/plugin/src/index.ts"],
       "@gamers-source/angular-tools-utils": ["./tools/angular/utils/src/index.ts"],
+      "@gamers-source/git-testing": ["./tools/git/testing/src/index.ts"],
       "@gamers-source/git-utils": ["./tools/git/utils/src/index.ts"],
       "@gamers-source/node-plugin": ["./tools/node/plugin/src/index.ts"],
       "@gamers-source/nx-plugin": ["./tools/nx/plugin/src/index.ts"],
