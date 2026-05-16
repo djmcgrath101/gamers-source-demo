@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   imports: [RouterOutlet],
-  selector: 'gs-root',
+  selector: 'co-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

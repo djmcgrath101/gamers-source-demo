@@ -1,12 +1,5 @@
-import {
-  ApplicationConfig,
-  isDevMode,
-  provideBrowserGlobalErrorListeners
-} from '@angular/core';
-import {
-  provideClientHydration,
-  withEventReplay
-} from '@angular/platform-browser';
+import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 import { appRoutes } from './app.routes';

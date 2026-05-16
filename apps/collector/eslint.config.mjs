@@ -12,23 +12,23 @@ export default [
         'error',
         {
           type: 'attribute',
-          prefix: 'gs',
-          style: 'camelCase',
-        },
+          prefix: 'co',
+          style: 'camelCase'
+        }
       ],
       '@angular-eslint/component-selector': [
         'error',
         {
           type: 'element',
-          prefix: 'gs',
-          style: 'kebab-case',
-        },
-      ],
-    },
+          prefix: 'co',
+          style: 'kebab-case'
+        }
+      ]
+    }
   },
   {
     files: ['**/*.html'],
     // Override or add rules here
-    rules: {},
-  },
+    rules: {}
+  }
 ];

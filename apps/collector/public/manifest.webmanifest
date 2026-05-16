@@ -1,6 +1,6 @@
 {
-  "name": "Gamer's Source",
-  "short_name": "Gamer's Source",
+  "name": "Gamer's Source Collector",
+  "short_name": "Gamer's Source Collector",
   "theme_color": "#01579b",
   "background_color": "#002f6c",
   "display": "standalone",

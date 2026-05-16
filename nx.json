@@ -8,7 +8,7 @@
     "appsDir": "apps"
   },
   "defaultBase": "main",
-  "defaultProject": "gamers-source",
+  "defaultProject": "collector",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
