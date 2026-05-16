@@ -1,0 +1,13 @@
+{
+  "name": "shared-angular-core",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/angular/core/src",
+  "prefix": "gs",
+  "projectType": "library",
+  "tags": ["scope:frontend", "type:core"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

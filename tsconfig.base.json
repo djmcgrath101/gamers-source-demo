@@ -18,6 +18,7 @@
       "@gamers-source/nx-plugin": ["./tools/nx/plugin/src/index.ts"],
       "@gamers-source/nx-types": ["./tools/nx/types/src/index.ts"],
       "@gamers-source/nx-utils": ["./tools/nx/utils/src/index.ts"],
+      "@gamers-source/shared-angular-core": ["./libs/shared/angular/core/src/index.ts"],
       "@gamers-source/shared-angular-data-access": [
         "./libs/shared/angular/data-access/src/index.ts"
       ],
