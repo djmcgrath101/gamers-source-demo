@@ -10,7 +10,7 @@ import { NgModule } from '@angular/core';
  *
  * ```ts
  * import { NgModule } from '@angular/core';
- * import { throwIfAlreadyLoaded } from '@cybertec/angular-utils';
+ * import { throwIfAlreadyLoaded } from '@gamers-source/shared-angular-utils';
  *
  * @NgModule({
  *  imports: [CoreModule],
