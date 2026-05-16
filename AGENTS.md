@@ -166,11 +166,6 @@ In the final response, explicitly list which surfaces were changed.
 - If a mock or test helper is likely to be reused outside a single spec file, promote it into the appropriate `type:testing` library instead of duplicating it across suites.
 - When extending a shared mock for a specific test, compose on top of the shared utility rather than rewriting the full mock from scratch.
 
-### Angular Unit Tests
-
-- Use `@ngneat/spectator/jest` by default for Angular unit tests. Only use raw Angular testing APIs when Spectator cannot support the case.
-- Prefer Spectator factories such as `createComponentFactory`, `createRoutingFactory`, and `createServiceFactory` over configuring `TestBed` manually.
-
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
 

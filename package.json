@@ -56,7 +56,6 @@
     "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.8.0",
     "@faker-js/faker": "^10.4.0",
-    "@ngneat/spectator": "^22.1.0",
     "@ngrx/eslint-plugin": "^21.1.0",
     "@nx/angular": "22.7.0",
     "@nx/devkit": "22.7.2",

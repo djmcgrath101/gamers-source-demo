@@ -1,13 +1,25 @@
-import { Spectator, createComponentFactory } from '@ngneat/spectator/vitest';
+import { TestBed } from '@angular/core/testing';
 import { PageNotFoundView } from './page-not-found.view';
 
 describe('PageNotFoundView', () => {
-  let spectator: Spectator<PageNotFoundView>;
-  const createComponent = createComponentFactory(PageNotFoundView);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [PageNotFoundView]
+    });
+    TestBed.overrideComponent(PageNotFoundView, {
+      set: {
+        styles: []
+      }
+    });
+  });
 
-  beforeEach(() => (spectator = createComponent()));
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
 
   it('should create', () => {
-    expect(spectator.fixture).toBeTruthy();
+    const fixture = TestBed.createComponent(PageNotFoundView);
+
+    expect(fixture).toBeTruthy();
   });
 });

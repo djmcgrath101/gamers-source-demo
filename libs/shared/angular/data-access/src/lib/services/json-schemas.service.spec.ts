@@ -1,38 +1,52 @@
-import { HttpMethod, SpectatorHttp, createHttpFactory } from '@ngneat/spectator/vitest';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { Schema } from 'ajv';
 import { JsonSchemasService } from './json-schemas.service';
 
 describe('JsonSchemasService', () => {
-  let spectator: SpectatorHttp<JsonSchemasService>;
-  const createHttp = createHttpFactory(JsonSchemasService);
+  let controller: HttpTestingController;
+  let service: JsonSchemasService;
 
-  const schemaUrl = 'https://example.com/schema';
-  const schemaId = Symbol('test-schema');
   const mockSchema: Schema = { type: 'object', properties: { name: { type: 'string' } } };
+  const schemaId = Symbol('test-schema');
+  const schemaUrl = 'https://example.com/schema';
 
   beforeEach(() => {
-    spectator = createHttp();
+    TestBed.configureTestingModule({
+      providers: [JsonSchemasService, provideHttpClient(), provideHttpClientTesting()]
+    });
+
+    controller = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(JsonSchemasService);
+  });
+
+  afterEach(() => {
+    controller.verify();
   });
 
   it('creates service instance', () => {
-    expect(spectator.service).toBeTruthy();
+    expect(service).toBeTruthy();
   });
 
   it('loads a schema from a URL and caches it', () => {
-    expect(spectator.service.isLoaded(schemaUrl, schemaId)).toBe(false);
+    expect(service.isLoaded(schemaUrl, schemaId)).toBe(false);
 
-    spectator.service.loadSchema(schemaUrl, schemaId).subscribe(result => {
+    service.loadSchema(schemaUrl, schemaId).subscribe(result => {
       expect(result).toEqual(mockSchema);
-      expect(spectator.service.isLoaded(schemaUrl, schemaId)).toBe(true);
+      expect(service.isLoaded(schemaUrl, schemaId)).toBe(true);
     });
-    spectator.expectOne(schemaUrl, HttpMethod.GET).flush(mockSchema);
+
+    const request = controller.expectOne(schemaUrl);
+    expect(request.request.method).toBe('GET');
+    request.flush(mockSchema);
   });
 
   it('returns cached schema when already loaded', () => {
-    spectator.service.loadSchema(schemaUrl, schemaId).subscribe();
-    spectator.expectOne(schemaUrl, HttpMethod.GET).flush(mockSchema);
+    service.loadSchema(schemaUrl, schemaId).subscribe();
+    controller.expectOne(schemaUrl).flush(mockSchema);
 
-    spectator.service.loadSchema(schemaUrl, schemaId).subscribe(schema => {
+    service.loadSchema(schemaUrl, schemaId).subscribe(schema => {
       expect(schema).toEqual(mockSchema);
     });
   });
@@ -40,25 +54,25 @@ describe('JsonSchemasService', () => {
   it('loads the same URL separately for different schema IDs', () => {
     const otherSchemaId = Symbol('other-test-schema');
 
-    spectator.service.loadSchema(schemaUrl, schemaId).subscribe();
-    spectator.expectOne(schemaUrl, HttpMethod.GET).flush(mockSchema);
+    service.loadSchema(schemaUrl, schemaId).subscribe();
+    controller.expectOne(schemaUrl).flush(mockSchema);
 
-    spectator.service.loadSchema(schemaUrl, otherSchemaId).subscribe(result => {
+    service.loadSchema(schemaUrl, otherSchemaId).subscribe(result => {
       expect(result).toEqual(mockSchema);
-      expect(spectator.service.isLoaded(schemaUrl, otherSchemaId)).toBe(true);
+      expect(service.isLoaded(schemaUrl, otherSchemaId)).toBe(true);
     });
-    spectator.expectOne(schemaUrl, HttpMethod.GET).flush(mockSchema);
+    controller.expectOne(schemaUrl).flush(mockSchema);
   });
 
   it('validates data against a loaded schema', () => {
     const validData = { name: 'John' };
     const invalidData = { name: 123 };
 
-    spectator.service.loadSchema(schemaUrl, schemaId).subscribe();
-    spectator.expectOne(schemaUrl, HttpMethod.GET).flush(mockSchema);
+    service.loadSchema(schemaUrl, schemaId).subscribe();
+    controller.expectOne(schemaUrl).flush(mockSchema);
 
-    const validResult = spectator.service.validateData(schemaId, validData);
-    const invalidResult = spectator.service.validateData(schemaId, invalidData);
+    const validResult = service.validateData(schemaId, validData);
+    const invalidResult = service.validateData(schemaId, invalidData);
 
     expect(validResult.isValid).toBe(true);
     expect(validResult.errorsText).toBe('No errors');
@@ -69,43 +83,43 @@ describe('JsonSchemasService', () => {
 
   it('validates data against every schema loaded for an ID', () => {
     const ageSchemaUrl = 'https://example.com/age-schema';
-    const nameSchema: Schema = {
-      type: 'object',
-      required: ['name'],
-      properties: { name: { type: 'string' } }
-    };
     const ageSchema: Schema = {
       type: 'object',
       required: ['age'],
       properties: { age: { type: 'number' } }
     };
+    const nameSchema: Schema = {
+      type: 'object',
+      required: ['name'],
+      properties: { name: { type: 'string' } }
+    };
 
-    spectator.service.loadSchema(schemaUrl, schemaId).subscribe();
-    spectator.expectOne(schemaUrl, HttpMethod.GET).flush(nameSchema);
-    spectator.service.loadSchema(ageSchemaUrl, schemaId).subscribe();
-    spectator.expectOne(ageSchemaUrl, HttpMethod.GET).flush(ageSchema);
+    service.loadSchema(schemaUrl, schemaId).subscribe();
+    controller.expectOne(schemaUrl).flush(nameSchema);
+    service.loadSchema(ageSchemaUrl, schemaId).subscribe();
+    controller.expectOne(ageSchemaUrl).flush(ageSchema);
 
-    expect(spectator.service.validateData(schemaId, { age: 25, name: 'John' }).isValid).toBe(true);
-    expect(spectator.service.validateData(schemaId, { age: 25 }).isValid).toBe(false);
-    expect(spectator.service.validateData(schemaId, { name: 'John' }).isValid).toBe(false);
+    expect(service.validateData(schemaId, { age: 25, name: 'John' }).isValid).toBe(true);
+    expect(service.validateData(schemaId, { age: 25 }).isValid).toBe(false);
+    expect(service.validateData(schemaId, { name: 'John' }).isValid).toBe(false);
   });
 
   it('throws an error when validating data with an unloaded schema', () => {
     const schemaId = Symbol('unloaded-schema');
     const data = { name: 'John' };
 
-    expect(() => spectator.service.validateData(schemaId, data)).toThrow(
+    expect(() => service.validateData(schemaId, data)).toThrow(
       'Attempting to validate data before loading schema!  Load the schema first using loadSchema$ method.'
     );
   });
 
   it('validates data against a single schema directly', () => {
     const schema: Schema = { type: 'object', properties: { age: { type: 'number' } } };
-    const validData = { age: 25 };
     const invalidData = { age: 'twenty-five' };
+    const validData = { age: 25 };
 
-    const validResult = spectator.service.validateData(schema, validData);
-    const invalidResult = spectator.service.validateData(schema, invalidData);
+    const validResult = service.validateData(schema, validData);
+    const invalidResult = service.validateData(schema, invalidData);
 
     expect(validResult.isValid).toBe(true);
     expect(validResult.errorsText).toBe('No errors');
@@ -115,10 +129,10 @@ describe('JsonSchemasService', () => {
   });
 
   it('does not reload a schema if it is already loaded', () => {
-    spectator.service.loadSchema(schemaUrl, schemaId).subscribe();
-    spectator.expectOne(schemaUrl, HttpMethod.GET).flush(mockSchema);
+    service.loadSchema(schemaUrl, schemaId).subscribe();
+    controller.expectOne(schemaUrl).flush(mockSchema);
 
-    spectator.service.loadSchema(schemaUrl, schemaId).subscribe();
-    spectator.controller.expectNone(schemaUrl);
+    service.loadSchema(schemaUrl, schemaId).subscribe();
+    controller.expectNone(schemaUrl);
   });
 });

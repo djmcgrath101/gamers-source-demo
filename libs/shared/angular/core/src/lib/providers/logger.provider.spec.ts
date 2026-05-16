@@ -1,5 +1,5 @@
-vitest.mock('@angular/core', () => {
-  const actual = vitest.importActual('@angular/core');
+vitest.mock('@angular/core', async () => {
+  const actual = await vitest.importActual<typeof import('@angular/core')>('@angular/core');
 
   return {
     ...actual,

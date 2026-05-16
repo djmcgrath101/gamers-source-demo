@@ -1,12 +1,12 @@
+import { DOCUMENT } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { IconDefinition as FaIconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { MatSvgIconDefinition, SvgIconDefinition } from '@gamers-source/shared-material-types';
-import { SpectatorService, createServiceFactory } from '@ngneat/spectator/jest';
 import { MatIconService } from './mat-icon.service';
 
 describe('MatIconService', () => {
-  let spectator: SpectatorService<MatIconService>;
   let domSanitizerMock: Pick<
     DomSanitizer,
     'bypassSecurityTrustHtml' | 'bypassSecurityTrustResourceUrl'
@@ -31,19 +31,27 @@ describe('MatIconService', () => {
     }
   }
 
-  const createService = createServiceFactory({
-    service: MatIconService,
-    providers: [
-      {
-        provide: DomSanitizer,
-        useFactory: () => domSanitizerMock
-      },
-      {
-        provide: MatIconRegistry,
-        useFactory: () => matIconRegistryMock
-      }
-    ]
-  });
+  const setup = (): MatIconService => {
+    TestBed.configureTestingModule({
+      providers: [
+        MatIconService,
+        {
+          provide: DOCUMENT,
+          useValue: document
+        },
+        {
+          provide: DomSanitizer,
+          useValue: domSanitizerMock
+        },
+        {
+          provide: MatIconRegistry,
+          useValue: matIconRegistryMock
+        }
+      ]
+    });
+
+    return TestBed.inject(MatIconService);
+  };
 
   beforeEach(() => {
     removeSymbolsLinks();
@@ -57,16 +65,15 @@ describe('MatIconService', () => {
       addSvgIconLiteralInNamespace: vitest.fn(),
       setDefaultFontSetClass: vitest.fn()
     };
-
-    spectator = createService();
   });
 
   afterEach(() => {
     removeSymbolsLinks();
+    TestBed.resetTestingModule();
   });
 
   it('creates instance', () => {
-    expect(spectator.service).toBeTruthy();
+    expect(setup()).toBeTruthy();
   });
 
   describe('register', () => {
@@ -77,7 +84,7 @@ describe('MatIconService', () => {
         prefix: 'fab'
       };
 
-      spectator.service.register(iconDefinition);
+      setup().register(iconDefinition);
 
       expect(domSanitizerMock.bypassSecurityTrustHtml).toHaveBeenCalledWith(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16"><path d="M0 0h24v16H0z" /></svg>'
@@ -95,7 +102,7 @@ describe('MatIconService', () => {
         prefix: 'app'
       };
 
-      spectator.service.register(iconDefinition);
+      setup().register(iconDefinition);
 
       expect(domSanitizerMock.bypassSecurityTrustResourceUrl).toHaveBeenCalledWith(
         '/assets/icons/brand-mark.svg'
@@ -122,7 +129,7 @@ describe('MatIconService', () => {
         svgIconDefinition
       ];
 
-      spectator.service.register(...iconDefinitions);
+      setup().register(...iconDefinitions);
 
       expect(matIconRegistryMock.addSvgIconLiteralInNamespace).toHaveBeenCalledWith(
         'fab',
@@ -137,7 +144,7 @@ describe('MatIconService', () => {
     });
 
     it('adds Material Symbol names to the Google Fonts URL', () => {
-      spectator.service.register('home', 'settings');
+      setup().register('home', 'settings');
 
       const linkTag = getSymbolsLink();
       const url = new URL(linkTag?.href ?? '');
@@ -151,8 +158,10 @@ describe('MatIconService', () => {
     });
 
     it('deduplicates Material Symbol names across registrations', () => {
-      spectator.service.register('home', 'settings');
-      spectator.service.register('home', 'search');
+      const service = setup();
+
+      service.register('home', 'settings');
+      service.register('home', 'search');
 
       const linkTag = getSymbolsLink();
       const url = new URL(linkTag?.href ?? '');
@@ -167,7 +176,7 @@ describe('MatIconService', () => {
         prefix: 'app'
       };
 
-      spectator.service.register(iconDefinition);
+      setup().register(iconDefinition);
 
       expect(getSymbolsLink()).toBeNull();
     });
@@ -175,7 +184,7 @@ describe('MatIconService', () => {
 
   describe('setSymbolsStyle', () => {
     it('sets the Material Symbols font set class for the requested style', () => {
-      spectator.service.setSymbolsStyle('rounded');
+      setup().setSymbolsStyle('rounded');
 
       expect(matIconRegistryMock.setDefaultFontSetClass).toHaveBeenCalledWith(
         'material-symbols-rounded'
@@ -183,14 +192,16 @@ describe('MatIconService', () => {
     });
 
     it('does not create a Material Symbols link until symbol names are registered', () => {
-      spectator.service.setSymbolsStyle('rounded');
+      setup().setSymbolsStyle('rounded');
 
       expect(getSymbolsLink()).toBeNull();
     });
 
     it('updates the Google Fonts family parameter after symbol names are registered', () => {
-      spectator.service.register('home');
-      spectator.service.setSymbolsStyle('rounded');
+      const service = setup();
+
+      service.register('home');
+      service.setSymbolsStyle('rounded');
 
       const linkTag = getSymbolsLink();
       const url = new URL(linkTag?.href ?? '');
