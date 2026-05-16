@@ -13,6 +13,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "paths": {
+      "@gamers-source/angular-plugin": ["./tools/angular/plugin/src/index.ts"],
       "@gamers-source/nx-plugin": ["./tools/nx/plugin/src/index.ts"],
       "@gamers-source/nx-types": ["./tools/nx/types/src/index.ts"],
       "@gamers-source/nx-utils": ["./tools/nx/utils/src/index.ts"],
