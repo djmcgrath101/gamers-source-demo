@@ -1,6 +1,7 @@
 export * from './lib/aggregation.types';
 export * from './lib/arrays.types';
 export * from './lib/classes.types';
+export * from './lib/config';
 export * from './lib/objects.types';
 export * from './lib/primitives.types';
 export * from './lib/release.types';
