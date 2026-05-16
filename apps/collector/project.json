@@ -48,6 +48,13 @@
           "optimization": false,
           "extractLicenses": false,
           "sourceMap": true
+        },
+        "analysis": {
+          "outputHashing": "all",
+          "outputMode": "static",
+          "server": false,
+          "ssr": false,
+          "statsJson": true
         }
       },
       "defaultConfiguration": "production"
@@ -80,6 +87,16 @@
         "port": 4200,
         "staticFilePath": "dist/apps/collector/browser",
         "spa": true
+      }
+    },
+    "analyze": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm nx build collector --configuration=analysis",
+          "pnpm esbuild-visualizer --metadata dist/apps/collector/stats.json --filename dist/apps/collector/stats.html --title \"Collector Browser Bundle Analysis\" --template treemap --open"
+        ],
+        "parallel": false
       }
     }
   }
