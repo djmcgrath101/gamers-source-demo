@@ -37,7 +37,6 @@
       "description": "Test runner to use for unit tests.",
       "type": "string",
       "enum": ["none", "jest", "vitest"],
-      "default": "vitest",
       "x-priority": "important"
     },
     "tags": {

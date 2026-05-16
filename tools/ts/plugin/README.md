@@ -27,7 +27,7 @@ Notes:
 - `frontend` + `utils` is blocked here. Use `@gamers-source/angular-plugin:library` for frontend utility libraries.
 - Testable libraries such as `utils` default to Vitest.
 - Non-testable libraries such as `testing` and `types` default to no unit test runner.
-- `testing` libraries add the selected runner types to `tsconfig.lib.json`.
+- `testing` libraries add explicitly selected runner types to `tsconfig.lib.json` without creating a test target.
 
 ### `ts-file`
 

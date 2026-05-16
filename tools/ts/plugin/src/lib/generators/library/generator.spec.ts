@@ -100,6 +100,27 @@ describe('ts-lib generator', () => {
     expect(projectConfig.targets?.test).toBeUndefined();
   });
 
+  it('defaults testing libraries to no spec generation and no test target', async () => {
+    await tsLibraryGenerator(tree, {
+      name: 'auth',
+      scope: 'backend',
+      type: 'testing',
+      skipFormat: true
+    });
+
+    const projectConfig = readProjectConfiguration(tree, 'auth-testing');
+    const srcLibPath = joinPathFragments(projectConfig.root, 'src', 'lib');
+    const tsConfigLibPath = joinPathFragments(projectConfig.root, 'tsconfig.lib.json');
+    const tsConfigLib = JSON.parse(tree.read(tsConfigLibPath, 'utf-8')!);
+
+    expect(tree.exists(joinPathFragments(srcLibPath, 'auth.testing.ts'))).toBe(true);
+    expect(tree.exists(joinPathFragments(srcLibPath, 'auth.testing.spec.ts'))).toBe(false);
+    expect(projectConfig.targets?.test).toBeUndefined();
+    expect(tsConfigLib.compilerOptions.types ?? []).not.toEqual(
+      expect.arrayContaining(['jest', 'vitest'])
+    );
+  });
+
   it('adds dependency checks to eslint config when enabled', async () => {
     // A standard testing library should normalize silently unless
     // buildable was explicitly requested.
@@ -122,7 +143,7 @@ describe('ts-lib generator', () => {
     expect(loggerWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('adds vitest to tsconfig compiler types for testing libraries', async () => {
+  it('adds vitest to tsconfig compiler types for testing libraries without adding a test target', async () => {
     await tsLibraryGenerator(tree, {
       name: 'auth',
       scope: 'backend',
@@ -138,6 +159,7 @@ describe('ts-lib generator', () => {
     expect(tsConfigLib.compilerOptions.types).toEqual(
       expect.arrayContaining(['vitest/globals', 'vitest/importMeta', 'vite/client', 'vitest'])
     );
+    expect(projectConfig.targets?.test).toBeUndefined();
   });
 
   it('warns when a testing library is requested as buildable', async () => {

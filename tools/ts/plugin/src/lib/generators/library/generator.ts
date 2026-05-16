@@ -1,3 +1,4 @@
+import type { NxProjectUnitTestRunner } from '@gamers-source/nx-types';
 import {
   getPathToLibEntryPointFile,
   isTestableProject,
@@ -22,18 +23,22 @@ function normalizeOptions(options: TsLibraryGeneratorOptions): NormalizedTsLibra
     ...options,
     ...normalizeProjectOptions(options),
     checkDependencies: options.checkDependencies ?? false,
-    unitTestRunner: options.unitTestRunner
-      ? options.unitTestRunner
-      : isTestableProject(options.type)
-        ? 'vitest'
-        : 'none'
+    unitTestRunner: isTestableProject(options.type) ? (options.unitTestRunner ?? 'vitest') : 'none'
   };
+}
+
+/**
+ * Resolves the ambient test runner types requested for testing helper libraries.
+ */
+function getTestTypesRunner(options: TsLibraryGeneratorOptions): NxProjectUnitTestRunner {
+  return options.unitTestRunner ?? 'none';
 }
 
 /**
  * Creates a TypeScript library and applies workspace-specific defaults/templates.
  */
 export async function tsLibraryGenerator(tree: Tree, rawOptions: TsLibraryGeneratorOptions) {
+  const testTypesRunner = getTestTypesRunner(rawOptions);
   const options = normalizeOptions(rawOptions);
 
   if (options.scope === 'frontend') {
@@ -53,7 +58,7 @@ export async function tsLibraryGenerator(tree: Tree, rawOptions: TsLibraryGenera
   // to `tsconfig.lib.json` ensures that they are available regardless of whether the
   // library is testable or not.
   if (options.type === 'testing') {
-    addTestTypesToTsConfig(tree, projectConfig, options.unitTestRunner);
+    addTestTypesToTsConfig(tree, projectConfig, testTypesRunner);
   }
 
   generateFiles(tree, joinPathFragments(__dirname, 'files'), projectConfig.root, {
