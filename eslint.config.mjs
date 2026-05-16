@@ -151,5 +151,11 @@ export default [
     languageOptions: {
       parser: await import('jsonc-eslint-parser')
     }
+  },
+  {
+    files: ['**/*.spec.ts', '**/*.{mock,mocks}.ts'],
+    rules: {
+      '@nx/enforce-module-boundaries': 'off'
+    }
   }
 ];
