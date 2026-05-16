@@ -9,6 +9,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideRouter } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideAppConfig, provideLogger } from '@gamers-source/shared-angular-core';
+import { provideMaterial } from '@gamers-source/shared-material-core';
 import { appRoutes } from './app.routes';
 
 const appCode = 'GSC';
@@ -33,6 +34,7 @@ export const appConfig: ApplicationConfig = {
       code: appCode,
       theme: { active: 'system', themes: ['light', 'dark'] }
     }),
-    provideLogger(appCode)
+    provideLogger(appCode),
+    provideMaterial()
   ]
 };
