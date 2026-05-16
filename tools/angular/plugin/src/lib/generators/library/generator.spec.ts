@@ -27,6 +27,18 @@ vi.mock('@nx/angular/generators', () => ({
 };
 `
     );
+    tree.write(
+      `${options.directory}/tsconfig.lib.json`,
+      JSON.stringify(
+        {
+          compilerOptions: {
+            types: []
+          }
+        },
+        null,
+        2
+      )
+    );
   })
 }));
 
@@ -127,6 +139,7 @@ describe('ngLibGenerator', () => {
       name: 'orders',
       style: 'scss',
       type: 'feature',
+      unitTestRunner: 'jest',
       skipFormat: true
     });
 
@@ -146,6 +159,59 @@ describe('ngLibGenerator', () => {
 
     expect(tree.exists('libs/parse-date/utils/src/lib/parse-date.utils.ts')).toBe(true);
     expect(tree.exists('libs/parse-date/utils/src/lib/parse-date-utils.utils.ts')).toBe(false);
+  });
+
+  it('adds default vitest types to tsconfig for testing libraries without generating test targets', async () => {
+    const warnSpy = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+
+    await ngLibGenerator(tree, {
+      name: 'auth',
+      type: 'testing',
+      skipFormat: true
+    });
+
+    const tsConfigLib = JSON.parse(tree.read('libs/auth/testing/tsconfig.lib.json', 'utf-8')!);
+
+    expect(libraryGenerator).toHaveBeenCalledWith(
+      tree,
+      expect.objectContaining({
+        name: 'auth-testing',
+        routing: false,
+        skipModule: true,
+        standalone: false,
+        unitTestRunner: 'none'
+      })
+    );
+    expect(tsConfigLib.compilerOptions.types).toEqual(
+      expect.arrayContaining(['vitest/globals', 'vitest/importMeta', 'vite/client', 'vitest'])
+    );
+    expect(warnSpy).toHaveBeenCalledWith(
+      'No additional files were generated for libraries of type "testing".'
+    );
+    warnSpy.mockRestore();
+  });
+
+  it('adds explicitly requested jest types to tsconfig for testing libraries', async () => {
+    const warnSpy = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+
+    await ngLibGenerator(tree, {
+      name: 'auth',
+      type: 'testing',
+      unitTestRunner: 'jest',
+      skipFormat: true
+    });
+
+    const tsConfigLib = JSON.parse(tree.read('libs/auth/testing/tsconfig.lib.json', 'utf-8')!);
+
+    expect(libraryGenerator).toHaveBeenCalledWith(
+      tree,
+      expect.objectContaining({
+        name: 'auth-testing',
+        unitTestRunner: 'none'
+      })
+    );
+    expect(tsConfigLib.compilerOptions.types).toEqual(['jest']);
+    warnSpy.mockRestore();
   });
 
   it('skips readme generation for minimal libraries', async () => {

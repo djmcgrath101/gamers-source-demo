@@ -8,7 +8,7 @@ import { Except, SetOptional, SetRequired, Simplify } from 'type-fest';
 
 export type NgLibType = Extract<
   NxProjectLibType,
-  'core' | 'data-access' | 'feature' | 'ui' | 'utils'
+  'core' | 'data-access' | 'feature' | 'testing' | 'ui' | 'utils'
 >;
 
 export type NgLibGeneratorOptions = Simplify<
@@ -23,5 +23,8 @@ export type NgLibGeneratorOptions = Simplify<
   readonly minimal?: boolean;
 };
 
-export type NormalizedNgLibGeneratorOptions = SetRequired<NgLibGeneratorOptions, 'directory'> &
+export type NormalizedNgLibGeneratorOptions = SetRequired<
+  NgLibGeneratorOptions,
+  'directory' | 'unitTestRunner'
+> &
   NormalizedNxProjectOptions<'frontend', NgLibType>;

@@ -1,5 +1,6 @@
 import { configureAngularJestTransformIgnorePatterns } from '@gamers-source/angular-tools-utils';
 import { normalizeProjectOptions } from '@gamers-source/nx-utils';
+import { addTestTypesToTsConfig, type TestTypesRunner } from '@gamers-source/ts-utils';
 import { libraryGenerator, UnitTestRunner } from '@nx/angular/generators';
 import {
   formatFiles,
@@ -10,17 +11,21 @@ import {
   readProjectConfiguration,
   Tree
 } from '@nx/devkit';
+import { existsSync, readdirSync } from 'node:fs';
 import setupTailwindGenerator from '../setup-tailwind/generator';
 import { NgLibGeneratorOptions, NormalizedNgLibGeneratorOptions } from './schema';
 
 export async function ngLibGenerator(tree: Tree, rawOptions: NgLibGeneratorOptions) {
+  const testTypesRunner = getTestTypesRunner(rawOptions);
   const options = normalizeOptions(rawOptions);
 
   await libraryGenerator(tree, options);
 
   const projectConfig = readProjectConfiguration(tree, options.name);
 
-  configureAngularJestTransformIgnorePatterns(tree, projectConfig.root);
+  if (options.unitTestRunner === 'jest') {
+    configureAngularJestTransformIgnorePatterns(tree, projectConfig.root);
+  }
 
   if (options.type === 'feature' || options.type === 'ui') {
     if (options.addTailwind) {
@@ -31,14 +36,28 @@ export async function ngLibGenerator(tree: Tree, rawOptions: NgLibGeneratorOptio
     }
   }
 
-  generateFiles(tree, joinPathFragments(__dirname, 'files', options.type), projectConfig.root, {
-    ...options,
-    ...names(options.name),
-    // we use the raw name which doesn't include the 'utils' suffix
-    // for the fileName.
-    fileName: rawOptions.name,
-    tmpl: ''
-  });
+  if (options.type === 'testing') {
+    // We want to make globally available the types for the test runner being used.
+    // These would normally be added to the `tsconfig.spec.json` file, but since testing
+    // libraries aren't testable by default, they don't have that file. Adding the types
+    // to `tsconfig.lib.json` ensures that they are available regardless of whether the
+    // library is testable or not.
+    addTestTypesToTsConfig(tree, projectConfig, testTypesRunner);
+  }
+
+  const filesPath = joinPathFragments(__dirname, 'files', options.type);
+  if (hasTemplateFiles(filesPath)) {
+    generateFiles(tree, filesPath, projectConfig.root, {
+      ...options,
+      ...names(options.name),
+      // we use the raw name which doesn't include the 'utils' suffix
+      // for the fileName.
+      fileName: rawOptions.name,
+      tmpl: ''
+    });
+  } else {
+    logger.warn(`No additional files were generated for libraries of type "${options.type}".`);
+  }
 
   if (!options.minimal) {
     tree.write(joinPathFragments(projectConfig.root, 'README.md'), `# ${options.name}`);
@@ -49,12 +68,31 @@ export async function ngLibGenerator(tree: Tree, rawOptions: NgLibGeneratorOptio
   }
 }
 
-function normalizeOptions(rawOptions: NgLibGeneratorOptions): NormalizedNgLibGeneratorOptions {
-  const unitTestRunner =
-    rawOptions.unitTestRunner ||
-    ((rawOptions.buildable || rawOptions.publishable
+/**
+ * Resolves the test runner ambient types needed by testing libraries.
+ */
+function getTestTypesRunner(rawOptions: NgLibGeneratorOptions): TestTypesRunner {
+  return (rawOptions.unitTestRunner ||
+    (rawOptions.buildable || rawOptions.publishable
       ? 'vitest-angular'
-      : 'vitest-analog') as UnitTestRunner);
+      : 'vitest-analog')) as TestTypesRunner;
+}
+
+/**
+ * Returns whether a generator template directory exists and contains files.
+ */
+function hasTemplateFiles(filesPath: string): boolean {
+  if (!existsSync(filesPath)) {
+    return false;
+  }
+
+  return readdirSync(filesPath, { recursive: true, withFileTypes: true }).some(entry =>
+    entry.isFile()
+  );
+}
+
+function normalizeOptions(rawOptions: NgLibGeneratorOptions): NormalizedNgLibGeneratorOptions {
+  const unitTestRunner = getTestTypesRunner(rawOptions) as UnitTestRunner;
 
   let options: NormalizedNgLibGeneratorOptions = {
     ...normalizeProjectOptions({ ...rawOptions, scope: 'frontend' }),
@@ -72,6 +110,8 @@ function normalizeOptions(rawOptions: NgLibGeneratorOptions): NormalizedNgLibGen
     options = normalizeDataAccessOptions(options);
   } else if (options.type === 'utils') {
     options = normalizeUtilsOptions(options);
+  } else if (options.type === 'testing') {
+    options = normalizeTestingOptions(options);
   }
 
   return options;
@@ -128,6 +168,25 @@ function normalizeFeatureOptions(
     routing: options.routing ?? true,
     skipModule: options.skipModule ?? true,
     standalone: options.standalone ?? false
+  };
+}
+
+function normalizeTestingOptions(
+  options: NormalizedNgLibGeneratorOptions
+): NormalizedNgLibGeneratorOptions {
+  if (options.addTailwind) {
+    logger.warn(
+      'Tailwind is not allowed from testing libraries.  Please define your styles in a UI library.'
+    );
+  }
+
+  return {
+    ...options,
+    addTailwind: false,
+    routing: options.routing ?? false,
+    skipModule: options.skipModule ?? true,
+    standalone: options.standalone ?? false,
+    unitTestRunner: 'none' as UnitTestRunner
   };
 }
 

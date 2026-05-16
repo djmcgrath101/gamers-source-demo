@@ -190,11 +190,11 @@
     },
     "type": {
       "type": "string",
-      "description": "The type of dependencies this library will export.  Use the ts-lib generator to generate projects containing testing or TS types.",
+      "description": "The type of dependencies this library will export. Use the ts-lib generator to generate non-Angular testing or TS types projects.",
       "x-prompt": {
         "message": "What type of dependencies will this library be exporting?",
         "type": "list",
-        "enum": ["core", "data-access", "feature", "ui", "utils"],
+        "enum": ["core", "data-access", "feature", "testing", "ui", "utils"],
         "items": [
           {
             "value": "core",
@@ -211,6 +211,10 @@
           {
             "value": "ui",
             "label": "UI"
+          },
+          {
+            "value": "testing",
+            "label": "Testing"
           },
           {
             "value": "utils",

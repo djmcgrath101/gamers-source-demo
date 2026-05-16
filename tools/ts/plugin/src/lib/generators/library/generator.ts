@@ -3,35 +3,19 @@ import {
   isTestableProject,
   normalizeProjectOptions
 } from '@gamers-source/nx-utils';
+import { addTestTypesToTsConfig } from '@gamers-source/ts-utils';
 import {
   formatFiles,
   generateFiles,
   joinPathFragments,
   logger,
   offsetFromRoot,
-  ProjectConfiguration,
   readProjectConfiguration,
   Tree
 } from '@nx/devkit';
 import { libraryGenerator as nxTsLibraryGenerator } from '@nx/js';
 import tsFileGenerator from '../file/generator';
 import { NormalizedTsLibraryGeneratorOptions, TsLibraryGeneratorOptions } from './schema';
-
-function addTestTypesToTsConfig(
-  tree: Tree,
-  projectConfig: ProjectConfiguration,
-  options: NormalizedTsLibraryGeneratorOptions
-) {
-  const tsConfigLibPath = joinPathFragments(projectConfig.root, 'tsconfig.lib.json');
-  const tsConfigLib = JSON.parse(tree.read(tsConfigLibPath, 'utf-8')!);
-  tsConfigLib.compilerOptions.types = [
-    ...(tsConfigLib.compilerOptions.types || []),
-    ...(options.unitTestRunner === 'vitest'
-      ? ['vitest/globals', 'vitest/importMeta', 'vite/client', 'vitest']
-      : [options.unitTestRunner])
-  ];
-  tree.write(tsConfigLibPath, JSON.stringify(tsConfigLib, null, 2));
-}
 
 function normalizeOptions(options: TsLibraryGeneratorOptions): NormalizedTsLibraryGeneratorOptions {
   return {
@@ -52,9 +36,9 @@ function normalizeOptions(options: TsLibraryGeneratorOptions): NormalizedTsLibra
 export async function tsLibraryGenerator(tree: Tree, rawOptions: TsLibraryGeneratorOptions) {
   const options = normalizeOptions(rawOptions);
 
-  if (options.scope === 'frontend' && options.type === 'utils') {
-    logger.error(
-      'Use the @gamers-source/angular-plugin:library generator to generate frontend utils libraries'
+  if (options.scope === 'frontend') {
+    logger.warn(
+      `Use the @gamers-source/angular-plugin:library generator to generate frontend libraries`
     );
     return;
   }
@@ -69,7 +53,7 @@ export async function tsLibraryGenerator(tree: Tree, rawOptions: TsLibraryGenera
   // to `tsconfig.lib.json` ensures that they are available regardless of whether the
   // library is testable or not.
   if (options.type === 'testing') {
-    addTestTypesToTsConfig(tree, projectConfig, options);
+    addTestTypesToTsConfig(tree, projectConfig, options.unitTestRunner);
   }
 
   generateFiles(tree, joinPathFragments(__dirname, 'files'), projectConfig.root, {

@@ -19,8 +19,8 @@ For example, `orders --type=feature` becomes the `orders-feature` project at
 Required options:
 
 - `name`: library name in kebab case
-- `type`: dependency type exported by the library (`core`, `data-access`, `feature`, `ui`, or
-  `utils`)
+- `type`: dependency type exported by the library (`core`, `data-access`, `feature`, `testing`,
+  `ui`, or `utils`)
 
 Workspace-specific options:
 
@@ -56,6 +56,8 @@ Common Angular library options:
   standalone components, and modules are intentionally disabled because data-access libraries
   should not export UI.
 - `feature`: creates a `views` folder. Routing defaults to `true`; modules are skipped by default.
+- `testing`: creates a non-testable testing helper library and adds the selected test runner's
+  ambient types to `tsconfig.lib.json`. Tailwind is intentionally disabled.
 - `ui`: creates `components`, `directives`, `forms`, and `pipes` folders. Routing is intentionally
   disabled.
 - `utils`: creates a starter utility file and spec named from the raw library name. Tailwind,
@@ -69,6 +71,7 @@ Generated Jest configs are patched to transform workspace-approved ESM dependenc
 ```bash
 pnpm nx g @gamers-source/angular-plugin:ng-lib catalog --type=data-access
 pnpm nx g @gamers-source/angular-plugin:ng-lib orders --type=feature --routing
+pnpm nx g @gamers-source/angular-plugin:ng-lib auth --type=testing --unitTestRunner=jest
 pnpm nx g @gamers-source/angular-plugin:ng-lib design-system --type=ui --addTailwind --buildable
 pnpm nx g @gamers-source/angular-plugin:ng-lib date --type=utils --minimal
 ```

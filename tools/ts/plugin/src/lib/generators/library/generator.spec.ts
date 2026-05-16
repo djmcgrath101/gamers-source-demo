@@ -14,8 +14,8 @@ describe('ts-lib generator', () => {
     vi.restoreAllMocks();
   });
 
-  it('blocks frontend utils libraries', async () => {
-    const loggerErrorSpy = vi.spyOn(logger, 'error').mockImplementation(() => {});
+  it('warns and skips frontend libraries', async () => {
+    const loggerWarnSpy = vi.spyOn(logger, 'warn').mockImplementation(() => {});
 
     await tsLibraryGenerator(tree, {
       name: 'date',
@@ -23,8 +23,8 @@ describe('ts-lib generator', () => {
       type: 'utils'
     });
 
-    expect(loggerErrorSpy).toHaveBeenCalledWith(
-      'Use the @gamers-source/angular-plugin:library generator to generate frontend utils libraries'
+    expect(loggerWarnSpy).toHaveBeenCalledWith(
+      'Use the @gamers-source/angular-plugin:library generator to generate frontend libraries'
     );
     expect(() => readProjectConfiguration(tree, 'date-utils')).toThrow();
   });
